@@ -4,6 +4,7 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import com.mineinabyss.components.playerData
 import com.mineinabyss.deeperworld.services.WorldManager
 import com.mineinabyss.idofront.font.Space
+import com.mineinabyss.idofront.messaging.miniMsg
 import com.mineinabyss.mineinabyss.core.*
 import com.mineinabyss.playerprofile.luckPerms
 import kotlinx.coroutines.delay
@@ -35,9 +36,9 @@ data class ItemDrop(
 fun Player.isInHub() = MIAConfig.data.hubSection == player?.location?.let { WorldManager.getSectionFor(it) }
 
 fun Player.updateBalance() {
-    val data = player?.playerData
-    val orthCoinBalance = data?.orthCoinsHeld
-    val mittyTokenBalance = data?.mittyTokensHeld
+    val data = player?.playerData ?: return
+    val orthCoinBalance = data.orthCoinsHeld
+    val mittyTokenBalance = data.mittyTokensHeld
     val splitBalance = orthCoinBalance.toString().toList().joinToString { ":banking_$it:" }.replace(", ", "")
     val splitSupporterBalance = mittyTokenBalance.toString().toList().joinToString { ":banking_$it:" }.replace(", ", "")
 
@@ -51,7 +52,11 @@ fun Player.updateBalance() {
         do {
             player?.sendActionBar(currentBalance)
             delay(1.seconds)
-        } while (data.orthCoinsHeld == orthCoinBalance && data.mittyTokensHeld == mittyTokenBalance && data.showPlayerBalance)
+        } while (
+            data.orthCoinsHeld == orthCoinBalance &&
+            data.mittyTokensHeld == mittyTokenBalance &&
+            data.showPlayerBalance
+        )
         return@launch
     }
 }
@@ -129,7 +134,7 @@ fun Player.getLinkedDiscordAccount() : String? {
     return runCatching { discordSRV.jda.getUserById(discordSRV.accountLinkManager.getDiscordId(player?.uniqueId))?.name }.getOrNull()
 }
 
-fun Player.getGroups() : List<String> {
+fun Player.getGroups(): List<String> {
     return luckPerms.userManager.getUser(player?.uniqueId!!)?.getNodes(NodeType.INHERITANCE)?.stream()
         ?.map { obj: InheritanceNode -> obj.groupName }?.toList() ?: emptyList()
 }

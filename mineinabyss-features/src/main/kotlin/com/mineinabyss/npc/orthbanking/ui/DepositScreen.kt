@@ -1,52 +1,31 @@
 package com.mineinabyss.npc.orthbanking.ui
 
 import androidx.compose.runtime.Composable
+import com.mineinabyss.guiy.components.ItemGrid
+import com.mineinabyss.guiy.components.canvases.Chest
+import com.mineinabyss.guiy.components.rememberItemGridState
+import com.mineinabyss.guiy.inventory.GuiyOwner
 import com.mineinabyss.guiy.modifiers.Modifier
 import com.mineinabyss.guiy.modifiers.at
+import com.mineinabyss.guiy.modifiers.clickable
 import com.mineinabyss.guiy.modifiers.size
-import com.mineinabyss.helpers.Text
-import com.mineinabyss.helpers.ui.composables.Button
-import com.mineinabyss.helpers.updateBalance
-import com.mineinabyss.idofront.messaging.broadcast
-import com.mineinabyss.idofront.messaging.miniMsg
-import com.mineinabyss.npc.orthbanking.depositCoins
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
 
 @Composable
-fun DepositScreen(player: Player) {
-    var amount = 1
-
-    Button(
-        Modifier.at(3, 0),
-        onClick = {
-            amount += 1
-            if (amount > 64) amount = 64
-            broadcast(amount)
+fun GuiyOwner.DepositScreen(player: Player) {
+    val title = "Hello world"
+    val state = rememberItemGridState()
+    Chest(
+        setOf(player),
+        title,
+        onClose = { exit() },
+        modifier = Modifier.clickable {
+            if(clickType == ClickType.SHIFT_LEFT) {
+                cursor = cursor?.let { state.add(it, 6, 1) }
+            }
         }
     ) {
-        Text("<gold><b>Increase Deposit".miniMsg(), modifier = Modifier.size(3, 2))
-    }
-
-    Button(
-        Modifier.at(4, 2),
-        onClick = {
-            broadcast(amount)
-            player.depositCoins(amount)
-            player.updateBalance()
-            player.closeInventory()
-        }
-    ) {
-        Text("<gold><b>Confirm Deposit".miniMsg())
-    }
-
-    Button(
-        Modifier.at(3, 3),
-        onClick = {
-            amount -= 1
-            if (amount < 1) amount = 1
-            broadcast(amount)
-        }
-    ) {
-        Text("<gold><b>Decrease Deposit".miniMsg(), modifier = Modifier.size(3, 1))
+        ItemGrid(state, Modifier.size(6, 1).at(1,1))
     }
 }

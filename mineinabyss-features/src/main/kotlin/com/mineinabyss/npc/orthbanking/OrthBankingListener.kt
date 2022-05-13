@@ -8,7 +8,7 @@ import com.mineinabyss.helpers.updateBalance
 import com.mineinabyss.npc.orthbanking.ui.BankMenu
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerJoinEvent
 
 class OrthBankingListener : Listener {
@@ -19,7 +19,7 @@ class OrthBankingListener : Listener {
     }
 
     @EventHandler
-    fun PlayerInteractEntityEvent.onInteractBanker() {
+    fun PlayerInteractAtEntityEvent.onInteractBanker() {
         val entity = rightClicked.toGearyOrNull() ?: return
         entity.get<OrthBanker>() ?: return
 

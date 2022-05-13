@@ -1,14 +1,17 @@
 package com.mineinabyss.npc.orthbanking
 
 import com.mineinabyss.components.playerData
+import com.mineinabyss.guiy.inventory.guiy
 import com.mineinabyss.helpers.isInHub
 import com.mineinabyss.helpers.updateBalance
 import com.mineinabyss.idofront.commands.arguments.intArg
+import com.mineinabyss.idofront.commands.extensions.actions.ensureSenderIsPlayer
 import com.mineinabyss.idofront.commands.extensions.actions.playerAction
 import com.mineinabyss.idofront.plugin.registerEvents
 import com.mineinabyss.mineinabyss.core.AbyssFeature
 import com.mineinabyss.mineinabyss.core.MineInAbyssPlugin
 import com.mineinabyss.mineinabyss.core.commands
+import com.mineinabyss.npc.orthbanking.ui.BankMenu
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Player
@@ -22,6 +25,13 @@ class OrthBankingFeature : AbyssFeature {
         commands {
             mineinabyss {
                 "bank"(desc = "Orthbanking related commands"){
+                    "menu" {
+                        ensureSenderIsPlayer()
+                        playerAction {
+                            val player = sender as Player
+                            guiy { BankMenu(player) }
+                        }
+                    }
                     "balance"(desc = "Toggles whether or not the balance should be shown.") {
                         playerAction {
                             val player = sender as Player
@@ -36,15 +46,11 @@ class OrthBankingFeature : AbyssFeature {
                             val player = sender as Player
                             val data = player.playerData
                             val currItem = player.inventory.itemInMainHand
-                            //val gearyEntity = currItem.toGearyOrNull(player)
-                            //val orthCoin = gearyEntity?.get<OrthCoin>() ?: return@playerAction
 
                             if (!player.isInHub()) return@playerAction
 
                             data.orthCoinsHeld += amount
                             data.mittyTokensHeld += amount
-                            //currItem.subtract(currItem.amount)
-                            //currItem.subtract(currItem.amount).broadcastVal("amount: ")
                             if (data.showPlayerBalance) player.updateBalance()
 
                         }
