@@ -6,7 +6,7 @@ import com.mineinabyss.geary.systems.GearyListener
 import com.mineinabyss.geary.systems.accessors.TargetScope
 import org.bukkit.entity.Player
 
-class PinRegistrySystem: GearyListener() {
+class PinRegistrySystem : GearyListener() {
     val TargetScope.player by added<Player>()
 
     @Handler

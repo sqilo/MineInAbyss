@@ -44,7 +44,8 @@ fun GuildUIScope.CurrentGuildInfoButton(modifier: Modifier = Modifier) {
             "${GOLD}${BOLD}Current Guild Info:",
             "${YELLOW}${BOLD}Guild Name: ${YELLOW}${ITALIC}${player.getGuildName()}",
             "${YELLOW}${BOLD}Guild Owner: ${YELLOW}${ITALIC}${
-                Bukkit.getOfflinePlayer(player.getGuildOwner()).name}",
+                Bukkit.getOfflinePlayer(player.getGuildOwner()).name
+            }",
             "${YELLOW}${BOLD}Guild Level: ${YELLOW}${ITALIC}${player.getGuildLevel()}",
             "${YELLOW}${BOLD}Guild Members: ${YELLOW}${ITALIC}${player.getGuildMemberCount()}",
             modifier = Modifier.size(2, 2)

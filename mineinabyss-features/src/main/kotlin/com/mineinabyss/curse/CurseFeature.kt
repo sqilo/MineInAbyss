@@ -14,7 +14,7 @@ import org.bukkit.entity.Player
 
 @Serializable
 @SerialName("curse")
-class CurseFeature: AbyssFeature {
+class CurseFeature : AbyssFeature {
     override fun MineInAbyssPlugin.enableFeature() {
         registerEvents(
             CurseAscensionListener(),
@@ -31,7 +31,7 @@ class CurseFeature: AbyssFeature {
                     playerAction {
                         val player = sender as Player
                         player.playerData.isAffectedByCurse = toggled
-                        val enabled = if(toggled) "enabled" else "disabled"
+                        val enabled = if (toggled) "enabled" else "disabled"
                         sender.success("Curse $enabled for ${player.name}")
                     }
                 }

@@ -29,11 +29,15 @@ class LayerListener : Listener {
             val toLayer = toSection.layer ?: return
 
             if (fromLayer != toLayer) {
-                player.showTitle(Title.title(toLayer.name.miniMsg(), toLayer.sub.miniMsg(), Title.Times.times(
-                    2.5.seconds.toJavaDuration(),
-                    0.5.seconds.toJavaDuration(),
-                    1.seconds.toJavaDuration()
-                )))
+                player.showTitle(
+                    Title.title(
+                        toLayer.name.miniMsg(), toLayer.sub.miniMsg(), Title.Times.times(
+                            2.5.seconds.toJavaDuration(),
+                            0.5.seconds.toJavaDuration(),
+                            1.seconds.toJavaDuration()
+                        )
+                    )
+                )
             }
         }
     }

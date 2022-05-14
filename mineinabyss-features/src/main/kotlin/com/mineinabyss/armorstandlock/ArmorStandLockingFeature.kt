@@ -52,8 +52,7 @@ class ArmorStandLockingFeature : AbyssFeature {
                             if (locked.isAllowed(uuid)) {
                                 player.error("This player can already interact with this armor stand")
                                 return@playerAction
-                            }
-                            else {
+                            } else {
                                 locked.allowedAccess.add(uuid)
                                 entity.toGeary().encodeComponentsTo(entity)
                                 player.success("$playerName can now interact with this armor stand")
@@ -94,7 +93,7 @@ class ArmorStandLockingFeature : AbyssFeature {
                         }
                     }
 
-                    "check" (desc = "Get a list of all players allowed to interact with this armor stand.") {
+                    "check"(desc = "Get a list of all players allowed to interact with this armor stand.") {
                         playerAction {
                             val player = sender as Player
                             val entity = player.playerData.recentRightclickedEntity ?: return@playerAction
@@ -105,8 +104,7 @@ class ArmorStandLockingFeature : AbyssFeature {
                                 locked.allowedAccess.forEach {
                                     player.info(it.toPlayer()?.name)
                                 }
-                            }
-                            else {
+                            } else {
                                 player.error("This armor stand is not protected.")
                                 player.error("Anyone can interact with it.")
                             }

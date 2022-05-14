@@ -44,7 +44,13 @@ fun GuildUIScope.GuildJoinRequest(modifier: Modifier = Modifier) {
     }
     Grid(modifier.size(9, 4)) {
         requests.forEach { newMember ->
-            Button(onClick = { if (!player.hasGuildRequests()) player.closeInventory() else nav.open(GuildScreen.JoinRequest(Bukkit.getOfflinePlayer(newMember))) }) {
+            Button(onClick = {
+                if (!player.hasGuildRequests()) player.closeInventory() else nav.open(
+                    GuildScreen.JoinRequest(
+                        Bukkit.getOfflinePlayer(newMember)
+                    )
+                )
+            }) {
                 Item(
                     newMember.toPlayer().head(
                         "$YELLOW$ITALIC${newMember.toPlayer()?.name}",

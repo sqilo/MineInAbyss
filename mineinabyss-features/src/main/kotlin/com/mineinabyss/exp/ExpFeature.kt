@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("exp")
-class ExpFeature: AbyssFeature {
+class ExpFeature : AbyssFeature {
     override fun MineInAbyssPlugin.enableFeature() {
         registerEvents(ExpListener())
     }

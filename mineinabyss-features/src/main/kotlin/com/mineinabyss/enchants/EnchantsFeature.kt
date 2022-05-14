@@ -71,7 +71,7 @@ class EnchantsFeature : AbyssFeature {
                 }
             }
 
-            val enchants  = CustomEnchants.enchantmentList
+            val enchants = CustomEnchants.enchantmentList
             tabCompletion {
                 when (args.size) {
                     1 -> listOf(
@@ -86,8 +86,8 @@ class EnchantsFeature : AbyssFeature {
                     3 -> {
                         when (args[0]) {
                             "enchant" ->
-                            ((enchants.find { it.key.toString() == args[1] }?.startLevel)?.rangeTo
-                            ((enchants.find { it.key.toString() == args[1] }!!.maxLevel)))?.map { it.toString() }
+                                ((enchants.find { it.key.toString() == args[1] }?.startLevel)?.rangeTo
+                                    ((enchants.find { it.key.toString() == args[1] }!!.maxLevel)))?.map { it.toString() }
 
                             else -> null
                         }

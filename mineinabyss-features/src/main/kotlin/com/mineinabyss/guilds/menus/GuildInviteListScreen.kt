@@ -49,12 +49,14 @@ fun GuildUIScope.GuildInvites(modifier: Modifier = Modifier) {
                 //TODO get guild from guild param above
                 nav.open(GuildScreen.Invite(owner))
             }) {
-                Item(player.head(
-                    "$GOLD${BOLD}Guildname: $YELLOW$ITALIC${owner.getGuildName()}",
-                    "${BLUE}Click this to accept or deny invite.",
-                    "${BLUE}Info about the guild can also be found in here.",
-                    isFlat = true
-                ))
+                Item(
+                    player.head(
+                        "$GOLD${BOLD}Guildname: $YELLOW$ITALIC${owner.getGuildName()}",
+                        "${BLUE}Click this to accept or deny invite.",
+                        "${BLUE}Info about the guild can also be found in here.",
+                        isFlat = true
+                    )
+                )
             }
         }
     }

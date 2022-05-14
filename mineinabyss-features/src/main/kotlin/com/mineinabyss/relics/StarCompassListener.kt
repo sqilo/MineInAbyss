@@ -9,7 +9,6 @@ import com.mineinabyss.geary.helpers.parent
 import com.mineinabyss.geary.papermc.access.toGeary
 import com.mineinabyss.geary.systems.TickingSystem
 import com.mineinabyss.geary.systems.accessors.TargetScope
-import com.mineinabyss.geary.systems.accessors.get
 import com.mineinabyss.helpers.bossbarCompass
 import com.mineinabyss.idofront.items.editItemMeta
 import com.mineinabyss.looty.tracking.toGearyOrNull
@@ -29,7 +28,7 @@ class StarCompassSystem : TickingSystem(interval = 0.1.seconds) {
                 it != null && it.toGearyOrNull(player)?.has<StarCompass>() == true
             }
 
-        val playerBar = player.toGeary().getOrSetPersisting { PlayerCompassBar() }
+        val playerBar = player.toGeary().getOrSet { PlayerCompassBar() }
         val sectionCenter = player.location.section?.region?.center
 
         if (sectionCenter != null) starCompass.compassLocation =

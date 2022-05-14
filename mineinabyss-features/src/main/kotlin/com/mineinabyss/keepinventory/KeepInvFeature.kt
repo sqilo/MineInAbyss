@@ -32,8 +32,7 @@ class KeepInvFeature(
                         if (toggled) {
                             player.playerData.keepInvStatus = true
                             player.success("Keep Inventory enabled for ${player.name}")
-                        }
-                        else {
+                        } else {
                             player.playerData.keepInvStatus = false
                             sender.error("Keep Inventory disabled for ${player.name}")
                         }

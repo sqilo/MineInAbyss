@@ -130,7 +130,7 @@ fun OfflinePlayer.invitePlayerToGuild(invitedPlayer: String) {
     }
 }
 
-fun OfflinePlayer.verifyGuildName(guildName: String) : String? {
+fun OfflinePlayer.verifyGuildName(guildName: String): String? {
     return transaction(AbyssContext.db) {
 
         val guild = Guilds.select {
@@ -375,7 +375,7 @@ fun OfflinePlayer.getGuildName(): String {
     }
 }
 
-fun OfflinePlayer.getGuildOwner() : UUID {
+fun OfflinePlayer.getGuildOwner(): UUID {
     return transaction(AbyssContext.db) {
         val playerGuild = Players.select {
             Players.playerUUID eq uniqueId
@@ -392,11 +392,11 @@ fun OfflinePlayer.getGuildOwner() : UUID {
     }
 }
 
-fun OfflinePlayer.isGuildOwner() : Boolean {
+fun OfflinePlayer.isGuildOwner(): Boolean {
     return player?.getGuildOwner() == player?.uniqueId
 }
 
-fun OfflinePlayer.getGuildOwnerFromInvite() : UUID {
+fun OfflinePlayer.getGuildOwnerFromInvite(): UUID {
     return transaction(AbyssContext.db) {
         val guilds = GuildJoinQueue.select {
             (GuildJoinQueue.playerUUID eq player!!.uniqueId) and (GuildJoinQueue.joinType eq GuildJoinType.Invite)
@@ -501,7 +501,7 @@ fun OfflinePlayer.hasGuildRequest(): Boolean {
     }
 }
 
-fun  OfflinePlayer.getNumberOfGuildRequests() : Int {
+fun OfflinePlayer.getNumberOfGuildRequests(): Int {
     var requestCount = 0
     val amount = transaction(AbyssContext.db) {
         val playerGuild = Players.select {
@@ -527,21 +527,20 @@ fun OfflinePlayer.removeGuildQueueEntries(guildJoinType: GuildJoinType, removeAl
         if (removeAll) {
             GuildJoinQueue.deleteWhere {
                 (GuildJoinQueue.joinType eq guildJoinType) and
-                (GuildJoinQueue.guildId eq id)
+                        (GuildJoinQueue.guildId eq id)
             }
-        }
-        else {
+        } else {
             GuildJoinQueue.deleteWhere {
                 (GuildJoinQueue.playerUUID eq uniqueId) and
-                (GuildJoinQueue.joinType eq guildJoinType) and
-                (GuildJoinQueue.guildId eq id)
+                        (GuildJoinQueue.joinType eq guildJoinType) and
+                        (GuildJoinQueue.guildId eq id)
             }
         }
     }
 }
 
 fun OfflinePlayer.getGuildJoinType(): GuildJoinType {
-    val joinType =  transaction(AbyssContext.db) {
+    val joinType = transaction(AbyssContext.db) {
         val guildId = Players.select {
             Players.playerUUID eq uniqueId
         }.single()[Players.guildId]

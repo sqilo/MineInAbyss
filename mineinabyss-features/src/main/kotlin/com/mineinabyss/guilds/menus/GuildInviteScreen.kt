@@ -25,14 +25,16 @@ fun GuildUIScope.GuildInviteScreen(owner: OfflinePlayer) {
 
 @Composable
 fun GuildUIScope.GuildLabel(owner: OfflinePlayer, modifier: Modifier) = Button {
-    Item(owner.head(
-        "$GOLD${BOLD}Current Guild Info:",
-        "$YELLOW${BOLD}Guild Name: $YELLOW$ITALIC${owner.getGuildName()}",
-        "$YELLOW${BOLD}Guild Owner: $YELLOW$ITALIC${owner.name}",
-        "$YELLOW${BOLD}Guild Level: $YELLOW$ITALIC${owner.getGuildLevel()}",
-        "$YELLOW${BOLD}Guild Members: $YELLOW$ITALIC${owner.getGuildMemberCount()}",
-        isCenterOfInv = true, isLarge = true
-    ), modifier = modifier)
+    Item(
+        owner.head(
+            "$GOLD${BOLD}Current Guild Info:",
+            "$YELLOW${BOLD}Guild Name: $YELLOW$ITALIC${owner.getGuildName()}",
+            "$YELLOW${BOLD}Guild Owner: $YELLOW$ITALIC${owner.name}",
+            "$YELLOW${BOLD}Guild Level: $YELLOW$ITALIC${owner.getGuildLevel()}",
+            "$YELLOW${BOLD}Guild Members: $YELLOW$ITALIC${owner.getGuildMemberCount()}",
+            isCenterOfInv = true, isLarge = true
+        ), modifier = modifier
+    )
 }
 
 @Composable

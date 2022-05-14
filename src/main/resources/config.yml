@@ -11,7 +11,7 @@ x-particles-vomit: &vomit
 # Layer config uses DeeperWorld sections
 # effect names are each effect class' @SerialName
 features:
-  - !<all> {}
+  - !<all> { }
 layers:
   - name: Orth
     sub: City of the Great Pit

@@ -40,11 +40,10 @@ fun Player.createGuild(guildName: String, feature: GuildFeature) {
             Guilds.name.lowerCase() eq guildName.lowercase()
         }.firstOrNull()
 
-        if (guild != null){
+        if (guild != null) {
             player?.error("There is already a guild registered with the name <i>$guildName</i>!")
             return@transaction
-        }
-        else player?.success("Your Guild has been registered with the name <i>$guildName")
+        } else player?.success("Your Guild has been registered with the name <i>$guildName")
 
         val rowID = Guilds.insert {
             it[name] = guildName
@@ -125,12 +124,12 @@ fun Player.changeStoredGuildName(newGuildName: String) {
 
 
 
-        if (guild != null){
+        if (guild != null) {
             player?.error("There is already a guild registered with this name!")
             return@transaction
         }
 
-        Guilds.update({Guilds.id eq guildId}) {
+        Guilds.update({ Guilds.id eq guildId }) {
             it[name] = newGuildName
         }
 
@@ -172,13 +171,13 @@ fun Player.changeGuildJoinType() {
             GuildJoinType.Request -> GuildJoinType.Invite
         }
 
-        Guilds.update({Guilds.id eq guildId}) {
+        Guilds.update({ Guilds.id eq guildId }) {
             it[joinType] = newType
         }
     }
 }
 
-fun Player.getGuildMembers() : List<Pair<GuildRanks, OfflinePlayer>>  {
+fun Player.getGuildMembers(): List<Pair<GuildRanks, OfflinePlayer>> {
     return transaction(AbyssContext.db) {
         val playerRow = Players.select {
             Players.playerUUID eq player!!.uniqueId
@@ -194,7 +193,7 @@ fun Player.getGuildMembers() : List<Pair<GuildRanks, OfflinePlayer>>  {
     }
 }
 
-fun String.getGuildMembers() : List<Pair<GuildRanks, OfflinePlayer>> {
+fun String.getGuildMembers(): List<Pair<GuildRanks, OfflinePlayer>> {
     return transaction(AbyssContext.db) {
         val guild = Guilds.select {
             Guilds.name.lowerCase() eq this@getGuildMembers.lowercase()
@@ -208,20 +207,23 @@ fun String.getGuildMembers() : List<Pair<GuildRanks, OfflinePlayer>> {
     }
 }
 
-fun getAllGuilds() : List<Triple<String, GuildJoinType, Int>> {
+fun getAllGuilds(): List<Triple<String, GuildJoinType, Int>> {
     return transaction(AbyssContext.db) {
-        return@transaction Guilds.selectAll().map {row -> Triple(row[Guilds.name], row[Guilds.joinType], row[Guilds.level]) }
+        return@transaction Guilds.selectAll()
+            .map { row -> Triple(row[Guilds.name], row[Guilds.joinType], row[Guilds.level]) }
     }
 }
 
 fun displayGuildList(): List<Triple<String, GuildJoinType, Int>> {
-    val list = getAllGuilds().sortedBy { it.third; it.first.getOwnerFromGuildName().getGuildMemberCount(); it.second; it.first }
+    val list = getAllGuilds().sortedBy {
+        it.third; it.first.getOwnerFromGuildName().getGuildMemberCount(); it.second; it.first
+    }
 
     return if (list.size < 20) list.subList(0, list.size)
     else list.subList(0, 20)
 }
 
-fun String.getOwnerFromGuildName() : OfflinePlayer {
+fun String.getOwnerFromGuildName(): OfflinePlayer {
     return transaction(AbyssContext.db) {
         val guild = Guilds.select {
             Guilds.name eq this@getOwnerFromGuildName

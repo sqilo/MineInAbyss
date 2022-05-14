@@ -11,8 +11,8 @@ data class OrthPins(
     var maximum: Int = 1,
 ) {
     fun selectPin(key: PrefabKey) {
-        if(key in selected) return
-        if(selected.size >= maximum)
+        if (key in selected) return
+        if (selected.size >= maximum)
             selected -= selected.last()
         selected += key
     }

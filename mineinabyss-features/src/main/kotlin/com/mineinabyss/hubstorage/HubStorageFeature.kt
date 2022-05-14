@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
 
 @Serializable
 @SerialName("hub_storage")
-class HubStorageFeature: AbyssFeature {
+class HubStorageFeature : AbyssFeature {
     override fun MineInAbyssPlugin.enableFeature() {
         commands {
             mineinabyss {

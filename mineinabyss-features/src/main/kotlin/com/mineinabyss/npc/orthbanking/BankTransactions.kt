@@ -54,7 +54,8 @@ fun Player.withdrawCoins(amount: Int) {
         return
     }
 
-    val item = LootyFactory.createFromPrefab(PrefabKey.of("mineinabyss:orthcoin")) ?: kotlin.error("No orth coin prefab found")
+    val item =
+        LootyFactory.createFromPrefab(PrefabKey.of("mineinabyss:orthcoin")) ?: kotlin.error("No orth coin prefab found")
     for (i in 1..amount) {
         inventory.addItem(item)
         item.useWithLooty {

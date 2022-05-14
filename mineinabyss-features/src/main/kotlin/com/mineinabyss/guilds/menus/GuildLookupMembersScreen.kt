@@ -55,15 +55,15 @@ fun GuildUIScope.RequestToJoinButton(modifier: Modifier, owner: OfflinePlayer, g
     }) {
         if (!inviteOnly && !player.hasGuild()) {
             Text("${GREEN}Request to join ${DARK_GREEN}${ITALIC}$guildName")
-        }
-        else if (inviteOnly) {
-            Text("${RED}${STRIKETHROUGH}Request to join ${ITALIC}$guildName",
+        } else if (inviteOnly) {
+            Text(
+                "${RED}${STRIKETHROUGH}Request to join ${ITALIC}$guildName",
                 "${DARK_RED}${ITALIC}This guild can currently only",
                 "${DARK_RED}${ITALIC}be joined by invites."
             )
-        }
-        else if (player.hasGuild()) {
-            Text("${RED}${STRIKETHROUGH}Request to join ${ITALIC}$guildName",
+        } else if (player.hasGuild()) {
+            Text(
+                "${RED}${STRIKETHROUGH}Request to join ${ITALIC}$guildName",
                 "${DARK_RED}${ITALIC}You have to leave your Guild",
                 "${DARK_RED}${ITALIC}before requesting to join another."
             )

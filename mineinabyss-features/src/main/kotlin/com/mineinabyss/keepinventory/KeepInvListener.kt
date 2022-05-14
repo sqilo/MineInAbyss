@@ -14,8 +14,7 @@ class KeepInvListener : Listener {
             drops.clear()
             keepLevel = true
             droppedExp = 0
-        }
-        else keepInventory = false
+        } else keepInventory = false
 
         //TODO maybe limit this to only the survival server with a config option
         if (player.lastDamageCause?.cause == EntityDamageEvent.DamageCause.VOID) keepInventory = true

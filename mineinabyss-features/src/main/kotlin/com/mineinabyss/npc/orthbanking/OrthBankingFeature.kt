@@ -21,7 +21,7 @@ class OrthBankingFeature : AbyssFeature {
 
         commands {
             mineinabyss {
-                "bank"(desc = "Orthbanking related commands"){
+                "bank"(desc = "Orthbanking related commands") {
                     "balance"(desc = "Toggles whether or not the balance should be shown.") {
                         playerAction {
                             val player = sender as Player

@@ -8,7 +8,6 @@ import com.mineinabyss.geary.prefabs.PrefabKey
 import com.mineinabyss.geary.prefabs.helpers.addPrefab
 import com.mineinabyss.geary.systems.TickingSystem
 import com.mineinabyss.geary.systems.accessors.TargetScope
-import com.mineinabyss.geary.systems.accessors.get
 
 class PinActivatorSystem : TickingSystem() {
     private val TargetScope.pins by get<ActivePins>()

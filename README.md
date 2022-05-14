@@ -44,7 +44,9 @@ our [Setup and Contribution guide](https://github.com/MineInAbyss/MineInAbyss/wi
     - Any economy plugin to go with it, ex [EssentialsX](https://www.spigotmc.org/resources/essentialsx.9089/)
 
 #### Recommended for development:
+
 - [PlugMan](https://www.spigotmc.org/resources/plugmanx.88135/)
+
 ### Gradle
 
 ```groovy

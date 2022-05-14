@@ -14,7 +14,7 @@ data class LockArmorStand(
     var lockState: Boolean,
     val allowedAccess: MutableSet<@Serializable(with = UUIDSerializer::class) UUID>
 ) {
-    fun isAllowed(uuid: UUID) : Boolean {
+    fun isAllowed(uuid: UUID): Boolean {
         return uuid in allowedAccess
     }
 }

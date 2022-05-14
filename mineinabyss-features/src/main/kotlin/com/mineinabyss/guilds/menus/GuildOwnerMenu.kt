@@ -75,7 +75,8 @@ fun GuildUIScope.GuildRenameButton(modifier: Modifier = Modifier) {
             ))
         }
     ) {
-        Text("${GOLD}${BOLD}Change Guild Name",
+        Text(
+            "${GOLD}${BOLD}Change Guild Name",
             "$YELLOW${BOLD}Guild Name: $YELLOW$ITALIC${player.getGuildName()}",
             "$YELLOW${BOLD}Guild Owner: $YELLOW$ITALIC${player.name}",
             "$YELLOW${BOLD}Guild Level: $YELLOW$ITALIC${player.getGuildLevel()}",
