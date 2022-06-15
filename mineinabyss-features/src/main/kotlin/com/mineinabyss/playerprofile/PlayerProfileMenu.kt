@@ -18,6 +18,8 @@ import com.mineinabyss.helpers.*
 import com.mineinabyss.helpers.ui.composables.Button
 import com.mineinabyss.idofront.font.Space
 import com.mineinabyss.idofront.messaging.miniMsg
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.Component
 import net.luckperms.api.LuckPermsProvider
 import org.bukkit.Bukkit
 import org.bukkit.Statistic
@@ -29,10 +31,14 @@ val luckPerms = LuckPermsProvider.get()
 @Composable
 fun GuiyOwner.PlayerProfile(viewer: Player, player: Player) {
     val isPatreon = player.toGeary().has<Patreon>()
-    val titleName = player.name.toList().joinToString { ":player_profile_$it:" }.replace(", ", "")
+    val playerComponent = Component.text(player.name).font(Key.key("playerprofile"))
+    val titleComponent =
+        Component.text("${Space.of(-12)}:player_profile${if (isPatreon) "_patreon:" else ":"}${Space.of(-178)}").append(
+            playerComponent.append(Component.text("${Space.of(-42)}${DisplayRanks(player)}"))
+        )
 
     Chest(setOf(viewer),
-        "${Space.of(-12)}:player_profile${if (isPatreon) "_patreon:" else ":"}${Space.of(-178)}$titleName${Space.of(-42)}${DisplayRanks(player)}",
+        titleComponent.content(),
         Modifier.height(4),
         onClose = { viewer.closeInventory() }) {
         PlayerHead(player, Modifier.at(0, 1))
@@ -138,8 +144,7 @@ fun GuildButton(player: Player, viewer: Player) {
                 "<yellow><b>Guild Level:</b> <yellow><i>${player.getGuildLevel()}".miniMsg(),
                 "<yellow><b>Guild Members:</b> <yellow><i>${player.getGuildMemberCount()}".miniMsg()
             )
-        }
-        else Text("<gold><b><i>${player.name}</b> is not".miniMsg(), "<gold><i>in any guild.".miniMsg())
+        } else Text("<gold><b><i>${player.name}</b> is not".miniMsg(), "<gold><i>in any guild.".miniMsg())
     }
 }
 
@@ -148,9 +153,12 @@ fun DiscordButton(player: Player) {
     val linked = player.getLinkedDiscordAccount()
 
     if (linked == null) {
-        Item(TitleItem.of(
-            "<b><#718AD6>${"${player.name}</b> <#718AD6>has not"}".miniMsg(),
-            "<#718AD6>linked an account.".miniMsg()))
+        Item(
+            TitleItem.of(
+                "<b><#718AD6>${"${player.name}</b> <#718AD6>has not"}".miniMsg(),
+                "<#718AD6>linked an account.".miniMsg()
+            )
+        )
     } else Item(TitleItem.of("<b><#718AD6>${player.name} is linked with <b>${linked}</b>.".miniMsg()))
 }
 
@@ -159,7 +167,7 @@ fun DisplayRanks(player: Player): String {
     var group = player.getGroups().filter { sortedRanks.contains(it) }.sortedBy { sortedRanks[it] }.firstOrNull()
     val patreon = player.getGroups().firstOrNull { it.contains("patreon") || it.contains("supporter") }
     group = if (group != null) "${Space.of(34)}:player_profile_rank_$group:" else Space.of(34)
-    if (patreon?.isNotEmpty() == true) group +=  ":${Space.of(-6)}:player_profile_rank_$patreon:"
+    if (patreon?.isNotEmpty() == true) group += ":${Space.of(-6)}:player_profile_rank_$patreon:"
 
     return group
 }

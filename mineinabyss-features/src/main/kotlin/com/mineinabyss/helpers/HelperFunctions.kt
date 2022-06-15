@@ -4,12 +4,13 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import com.mineinabyss.components.playerData
 import com.mineinabyss.deeperworld.services.WorldManager
 import com.mineinabyss.idofront.font.Space
-import com.mineinabyss.idofront.messaging.miniMsg
 import com.mineinabyss.mineinabyss.core.*
 import com.mineinabyss.playerprofile.luckPerms
 import kotlinx.coroutines.delay
 import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import net.luckperms.api.node.NodeType
 import net.luckperms.api.node.types.InheritanceNode
 import org.bukkit.Location
@@ -37,16 +38,20 @@ fun Player.isInHub() = MIAConfig.data.hubSection == player?.location?.let { Worl
 
 fun Player.updateBalance() {
     val data = player?.playerData ?: return
+    if (data.orthCoinsHeld < 0) data.orthCoinsHeld = 0
     val orthCoinBalance = data.orthCoinsHeld
     val mittyTokenBalance = data.mittyTokensHeld
-    val splitBalance = orthCoinBalance.toString().toList().joinToString { ":banking_$it:" }.replace(", ", "")
-    val splitSupporterBalance = mittyTokenBalance.toString().toList().joinToString { ":banking_$it:" }.replace(", ", "")
+    val coinComponent = Component.text(orthCoinBalance).font(Key.key("orthbanking"))
+    val tokenComponent = Component.text(mittyTokenBalance).font(Key.key("orthbanking"))
 
-    val currentBalance: Component = if (data?.mittyTokensHeld!! > 0) {
-        Component.text("${Space.of(128)}${splitBalance}:orthcoin: $splitSupporterBalance:mittytoken:")
-    } else Component.text("${Space.of(160)}${splitBalance}:orthcoin:")
-
-    if (data.orthCoinsHeld < 0) data.orthCoinsHeld = 0
+    val currentBalance: TextComponent =
+        if (data.mittyTokensHeld > 0)
+            Component.text(Space.of(128)).append(
+                coinComponent.append(Component.text(":orthcoin:"))
+                    .append((tokenComponent.append(Component.text(":mittytoken:"))))
+            ).toBuilder().build()
+        else Component.text(Space.of(160)).append(
+            coinComponent.append(Component.text(":orthcoin:"))).toBuilder().build()
 
     mineInAbyss.launch {
         do {
@@ -130,7 +135,7 @@ fun handleCurse(player: Player, from: Location, to: Location) {
     }
 }
 
-fun Player.getLinkedDiscordAccount() : String? {
+fun Player.getLinkedDiscordAccount(): String? {
     return runCatching { discordSRV.jda.getUserById(discordSRV.accountLinkManager.getDiscordId(player?.uniqueId))?.name }.getOrNull()
 }
 

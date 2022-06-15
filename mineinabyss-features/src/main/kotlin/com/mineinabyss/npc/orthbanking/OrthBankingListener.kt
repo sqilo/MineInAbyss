@@ -20,9 +20,7 @@ class OrthBankingListener : Listener {
 
     @EventHandler
     fun PlayerInteractAtEntityEvent.onInteractBanker() {
-        val entity = rightClicked.toGearyOrNull() ?: return
-        entity.get<OrthBanker>() ?: return
-
+        rightClicked.toGearyOrNull()?.get<OrthBanker>() ?: return
         guiy { BankMenu(player) }
     }
 }
