@@ -31,14 +31,13 @@ val luckPerms = LuckPermsProvider.get()
 @Composable
 fun GuiyOwner.PlayerProfile(viewer: Player, player: Player) {
     val isPatreon = player.toGeary().has<Patreon>()
-    val playerComponent = Component.text(player.name).font(Key.key("playerprofile"))
+    val playerComponent = "<white>${player.name}".miniMsg().font(Key.key("playerprofile"))
     val titleComponent =
-        Component.text("${Space.of(-12)}:player_profile${if (isPatreon) "_patreon:" else ":"}${Space.of(-178)}").append(
-            playerComponent.append(Component.text("${Space.of(-42)}${DisplayRanks(player)}"))
-        )
+        Component.text("${Space.of(-12)}:player_profile${if (isPatreon) "_patreon:" else ":"}${Space.of(-178)}")
+            .append(playerComponent).append(Component.text("${Space.of(-42)}${DisplayRanks(player)}"))
 
     Chest(setOf(viewer),
-        titleComponent.content(),
+        titleComponent,
         Modifier.height(4),
         onClose = { viewer.closeInventory() }) {
         PlayerHead(player, Modifier.at(0, 1))
