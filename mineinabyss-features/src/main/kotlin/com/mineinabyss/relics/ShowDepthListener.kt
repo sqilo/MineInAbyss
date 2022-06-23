@@ -11,7 +11,7 @@ import com.mineinabyss.geary.systems.accessors.SourceScope
 import com.mineinabyss.geary.systems.accessors.TargetScope
 import com.mineinabyss.helpers.isInHub
 import com.mineinabyss.idofront.messaging.info
-import com.mineinabyss.mineinabyss.core.layer
+import com.mineinabyss.mineinabyss.core.helpers.layer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Location

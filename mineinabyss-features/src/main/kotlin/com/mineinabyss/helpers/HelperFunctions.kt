@@ -5,8 +5,8 @@ import com.mineinabyss.components.playerData
 import com.mineinabyss.deeperworld.services.WorldManager
 import com.mineinabyss.idofront.font.Space
 import com.mineinabyss.mineinabyss.core.MIAConfig
-import com.mineinabyss.mineinabyss.core.isAbyssWorld
-import com.mineinabyss.mineinabyss.core.layer
+import com.mineinabyss.mineinabyss.core.helpers.isAbyssWorld
+import com.mineinabyss.mineinabyss.core.helpers.layer
 import com.mineinabyss.mineinabyss.core.mineInAbyss
 import kotlinx.coroutines.delay
 import net.kyori.adventure.bossbar.BossBar

@@ -7,7 +7,7 @@ import com.mineinabyss.idofront.plugin.registerEvents
 import com.mineinabyss.mineinabyss.core.AbyssFeature
 import com.mineinabyss.mineinabyss.core.MineInAbyssPlugin
 import com.mineinabyss.mineinabyss.core.commands
-import com.mineinabyss.mineinabyss.core.layer
+import com.mineinabyss.mineinabyss.core.helpers.layer
 import com.mineinabyss.pvp.PvpDamageListener
 import com.mineinabyss.pvp.PvpPrompt
 import kotlinx.serialization.SerialName

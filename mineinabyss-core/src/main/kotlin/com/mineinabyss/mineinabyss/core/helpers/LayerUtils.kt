@@ -1,8 +1,9 @@
-package com.mineinabyss.mineinabyss.core
+package com.mineinabyss.mineinabyss.core.helpers
 
 import com.mineinabyss.components.layer.Layer
 import com.mineinabyss.deeperworld.world.section.Section
 import com.mineinabyss.deeperworld.world.section.section
+import com.mineinabyss.mineinabyss.core.AbyssWorldManager
 import org.bukkit.Location
 import org.bukkit.World
 

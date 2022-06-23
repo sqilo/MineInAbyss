@@ -1,10 +1,5 @@
 package com.mineinabyss.mineinabyss.core
 
-interface AbyssFeature {
-    //TODO
-    val dependsOn: Set<String> get() = setOf()
+import com.mineinabyss.idofront.features.Feature
 
-    fun MineInAbyssPlugin.enableFeature() {}
-
-    fun MineInAbyssPlugin.disableFeature() {}
-}
+interface AbyssFeature : Feature<MineInAbyssPlugin>

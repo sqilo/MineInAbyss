@@ -1,6 +1,8 @@
 package com.mineinabyss.plugin
 
-import com.github.shynixn.mccoroutine.bukkit.launch
+import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
+import com.mineinabyss.components.curse.AscensionEffect
 import com.mineinabyss.geary.addon.GearyAddon
 import com.mineinabyss.geary.addon.autoscan
 import com.mineinabyss.geary.papermc.dsl.gearyAddon
@@ -9,28 +11,25 @@ import com.mineinabyss.guilds.database.GuildJoinQueue
 import com.mineinabyss.guilds.database.Guilds
 import com.mineinabyss.guilds.database.Players
 import com.mineinabyss.helpers.MessageQueue
+import com.mineinabyss.idofront.autoscan.autoscanPolymorphic
 import com.mineinabyss.idofront.commands.Command
-import com.mineinabyss.idofront.commands.execution.IdofrontCommandExecutor
+import com.mineinabyss.idofront.config.singleConfig
+import com.mineinabyss.idofront.config.startOrAppendKoin
+import com.mineinabyss.idofront.features.FeaturesCommandExecutor
 import com.mineinabyss.idofront.platforms.IdofrontPlatforms
-import com.mineinabyss.idofront.plugin.getServiceOrNull
 import com.mineinabyss.idofront.plugin.isPluginEnabled
-import com.mineinabyss.idofront.plugin.registerService
-import com.mineinabyss.idofront.time.ticks
-import com.mineinabyss.mineinabyss.core.AbyssContext
-import com.mineinabyss.mineinabyss.core.AbyssWorldManager
-import com.mineinabyss.mineinabyss.core.MIAConfig
-import com.mineinabyss.mineinabyss.core.MineInAbyssPlugin
-import kotlinx.coroutines.delay
-import net.milkbowl.vault.economy.Economy
-import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
+import com.mineinabyss.mineinabyss.core.*
+import kotlinx.serialization.modules.SerializersModule
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.koin.core.component.KoinComponent
+import org.koin.core.qualifier.qualifier
+import org.koin.dsl.module
 
-class MineInAbyssPluginImpl : MineInAbyssPlugin() {
+class MineInAbyssPluginImpl : MineInAbyssPlugin(), KoinComponent {
     override fun onLoad() {
         IdofrontPlatforms.load(this, "mineinabyss")
     }
@@ -49,47 +48,53 @@ class MineInAbyssPluginImpl : MineInAbyssPlugin() {
             }
         }
 
-        //TODO use Koin
-        registerService<AbyssContext>(object : AbyssContext {
-            override val econ = getServiceOrNull<Economy>("Vault")
-            override val addonScope: GearyAddon
-                get() = addon ?: error("Feature tried accessing Geary but it wasn't loaded")
-            override val miaSubcommands = mutableListOf<Command.() -> Unit>()
-            override val tabCompletions = mutableListOf<TabCompletion.() -> List<String>?>()
-            override val db = Database.connect("jdbc:sqlite:" + dataFolder.path + "/data.db", "org.sqlite.JDBC")
+        FeaturesCommandExecutor(this)
 
-            override val commandExecutor = object : IdofrontCommandExecutor(), TabCompleter {
-                override val commands = commands(this@MineInAbyssPluginImpl) {
-                    ("mineinabyss" / "mia")(desc = "The main command for Mine in Abyss") {
-                        miaSubcommands.forEach { it() }
-                    }
-                }
-
-                override fun onTabComplete(
-                    sender: CommandSender,
-                    command: org.bukkit.command.Command,
-                    alias: String,
-                    args: Array<String>
-                ): List<String> {
-                    val tab = TabCompletion(sender, command, alias, args)
-                    return tabCompletions.mapNotNull { it(tab) }.flatten()
+        startOrAppendKoin(module {
+            single(qualifier<MineInAbyssPlugin>()) {
+                Database.connect("jdbc:sqlite:" + dataFolder.path + "/data.db", "org.sqlite.JDBC")
+            }
+            single<AbyssStartup> {
+                object : AbyssStartup {
+                    override val addonScope: GearyAddon
+                        get() = addon ?: error("Feature tried accessing Geary but it wasn't loaded")
+                    override val miaSubcommands = mutableListOf<Command.() -> Unit>()
+                    override val tabCompletions = mutableListOf<TabCompletion.() -> List<String>?>()
                 }
             }
+            single<AbyssWorldManager> { AbyssWorldManagerImpl() }
+            singleConfig<MIAConfig>(
+                this@MineInAbyssPluginImpl,
+                format = Yaml(
+                    serializersModule = SerializersModule {
+                        autoscanPolymorphic<AbyssFeature>("com.mineinabyss")
+                        autoscanPolymorphic<AscensionEffect>("com.mineinabyss")
+                    },
+                    configuration = YamlConfiguration(extensionDefinitionPrefix = "x-")
+                ),
+                load = { conf ->
+                    conf.features
+                    "Enabling features" {
+                    }
+                },
+                unload = { conf ->
+                    "Disabling features" {
+                        conf.features.forEach {
+                            it.apply {
+                                "Disabled ${it::class.simpleName}" {
+                                    mineInAbyss.disableFeature()
+                                }
+                            }
+                        }
+                    }
+                })
         })
 
-        transaction(AbyssContext.db) {
-            addLogger(StdOutSqlLogger)
-
-            SchemaUtils.createMissingTablesAndColumns(Guilds, Players, GuildJoinQueue, MessageQueue)
-        }
-
-        launch {
-            delay(1.ticks)
-
-            val config = MIAConfigImpl()
-            config.load()
-            registerService<MIAConfig>(config)
-            registerService<AbyssWorldManager>(AbyssWorldManagerImpl())
+        with(AbyssContext()) {
+            transaction(db) {
+                addLogger(StdOutSqlLogger)
+                SchemaUtils.createMissingTablesAndColumns(Guilds, Players, GuildJoinQueue, MessageQueue)
+            }
         }
     }
 }

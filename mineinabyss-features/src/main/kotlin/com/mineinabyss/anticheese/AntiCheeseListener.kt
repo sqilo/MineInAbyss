@@ -3,7 +3,7 @@ package com.mineinabyss.anticheese
 import com.mineinabyss.helpers.handleCurse
 import com.mineinabyss.helpers.isInHub
 import com.mineinabyss.idofront.messaging.error
-import com.mineinabyss.mineinabyss.core.layer
+import com.mineinabyss.mineinabyss.core.helpers.layer
 import dev.geco.gsit.api.GSitAPI
 import dev.geco.gsit.api.event.PlayerGetUpSitEvent
 import org.bukkit.block.BlockFace

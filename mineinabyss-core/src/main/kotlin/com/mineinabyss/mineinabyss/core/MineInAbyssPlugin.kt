@@ -3,24 +3,20 @@ package com.mineinabyss.mineinabyss.core
 import com.mineinabyss.geary.addon.GearyAddon
 import com.mineinabyss.idofront.commands.Command
 import com.mineinabyss.idofront.commands.CommandHolder
-import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-abstract class MineInAbyssPlugin : JavaPlugin() {
+abstract class MineInAbyssPlugin : JavaPlugin(), KoinComponent {
+    val context: AbyssContext by inject()
+
     fun CommandHolder.mineinabyss(run: Command.() -> Unit) {
-        AbyssContext.miaSubcommands += run
+        context.startup.miaSubcommands += run
     }
 
     fun CommandHolder.tabCompletion(completion: TabCompletion.() -> List<String>?) {
-        AbyssContext.tabCompletions += completion
+        context.startup.tabCompletions += completion
     }
-
-    class TabCompletion(
-        val sender: CommandSender,
-        val command: org.bukkit.command.Command,
-        val alias: String,
-        val args: Array<String>
-    )
 }
 
 inline fun MineInAbyssPlugin.geary(run: GearyAddon.() -> Unit) {

@@ -5,7 +5,7 @@ import com.mineinabyss.components.pins.PinDrop
 import com.mineinabyss.geary.papermc.access.toGeary
 import com.mineinabyss.geary.papermc.store.encode
 import com.mineinabyss.idofront.items.editItemMeta
-import com.mineinabyss.mineinabyss.core.layer
+import com.mineinabyss.mineinabyss.core.helpers.layer
 import de.erethon.headlib.HeadLib
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
